@@ -1,0 +1,138 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+// 1
+import { createStore } from 'redux';
+
+import reduces from './reducers/index.js';
+import View from './components/View.js';
+
+
+
+/*  
+
+1. 把  redux 拿进来     ok
+
+2. 我需要一个react 组件作为view 【穿件一个view】  ok
+
+3. 我要用  stor里面的数据显示到  View中
+	
+	1. 我需要一个 store   【创建一个store】 ok
+		1. 需要 reduces  【创建一个 reduces】  ok
+	2. 我需要初始数据  ok
+
+	3. 我要获得 state状态数据 显示到view中去
+
+4. 我要触发一个  action  然后通过  dispatch 发送到store中进行处理    最后通过  订阅方法  执行回调方式
+
+
+5. 我不要使用  全局render
+
+*/
+
+
+
+
+
+// 3. 1
+const store = createStore( reduces, { text: 'xiaxia', arr:['abcd']}  );
+
+
+console.log( store.getState() )
+
+
+
+
+
+
+
+
+
+// import Counter from './components/Counter'
+// import counter from './reducers'
+
+// const store = createStore(counter)
+// const rootEl = document.getElementById('root')
+
+// const render = () => ReactDOM.render(
+//   <Counter
+//     value={store.getState()}
+//     onIncrement={() => store.dispatch({ type: 'INCREMENT' })}
+//     onDecrement={() => store.dispatch({ type: 'DECREMENT' })}
+//   />,
+//   rootEl
+// )
+
+// render()
+// store.subscribe(render)
+
+
+
+
+
+
+
+// 这是一个 生成新数据的方法   完事之后要返回新的状态
+// const reduces = ( state = 100, action ) => {
+// 	switch( action.type ){
+// 		case 'Increment':
+// 			return state  + 10;
+// 		case 'Decrement':
+// 			return state  - 10;
+// 		default: 
+// 			return state;
+// 	}
+// }
+
+// // 创建一个 数据对象  
+// const store = createStore( reduces );
+
+
+
+
+
+
+
+/*  这是我们的 Counter */
+// class Counter extends React.Component {
+// 	constructor(props) {
+// 		super(props);
+// 		this.state = {};
+// 	}
+// 	render(ReactElement, DOMElement, callback){
+// 		const { value }  = this.props
+// 		return (
+// 			<div>
+// 				<div><span>count: </span>{  value }</div>
+// 				<button onClick={ this.props.onIncrement }> + </button>
+// 				<button onClick={ this.props.onDecrement }> - </button>
+// 			</div>
+// 		)
+// 	}
+// }
+
+
+
+const render = () => ReactDOM.render(
+		<View 
+			data={  store.getState() } 
+			arrAction={ (text) => store.dispatch({type:'arr', text}) } 
+			delAction={ (index) => store.dispatch({ type:'del', index}) } 
+			sendAction={  ( text) => store.dispatch({ type: 'UPDATA', text }) }></View>,
+		document.getElementById('root')
+	)
+
+render();
+
+
+// 通过订阅数据变化时访问的方法 来更新页面
+store.subscribe(render)
+
+
+
+
+
+
+
+
+
+
